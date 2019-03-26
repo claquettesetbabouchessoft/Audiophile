@@ -1,5 +1,5 @@
 package audiophile;
 
-public class App {
-
+public class App{
+	
 }
