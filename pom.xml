@@ -11,7 +11,13 @@
 	    <groupId>io.netty</groupId>
 	    <artifactId>netty-all</artifactId>
 	    <version>5.0.0.Alpha2</version>
-	</dependency>	  	
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.flowpowered/flow-nbt -->
+	<dependency>
+	    <groupId>com.flowpowered</groupId>
+	    <artifactId>flow-nbt</artifactId>
+	    <version>1.0.0</version>
+	</dependency>
   </dependencies>
   
   <build>
