@@ -3,6 +3,11 @@ package fr.claquettesetbabouchessoft.audiophile.db.query;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import fr.claquettesetbabouchessoft.audiophile.db.query.parsing.QueryParser;
 import fr.claquettesetbabouchessoft.audiophile.db.query.request.DBRequest;
@@ -24,9 +29,11 @@ public class RequestFinder extends Thread{
 	
 	private Connection connection;
 	private boolean shouldStop;
+	private ExecutorService exec;
 	
 	public RequestFinder() {
 		try {
+			this.exec = Executors.newCachedThreadPool();
 			shouldStop = false;
 			//init mysql drivers
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -37,7 +44,7 @@ public class RequestFinder extends Thread{
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void run() {
 		while(!shouldStop) {
@@ -45,8 +52,20 @@ public class RequestFinder extends Thread{
 			DBRequest request = queue.getQuestion();
 			//if request is null it's that the queue is shutdown
 			if(request == null)continue;
-			//answer via a QueryParser and set the result in the queue
-			queue.setAnswer(new QueryParser(request, connection).parse());
+			//create parser
+			QueryParser parser = new QueryParser<>(request, connection);			
+			//create a future
+			Future<? extends DBResult> future = exec.submit(parser);
+			try {
+				//shutdown thread ASAP
+				//since there is only one thread running at a given time
+				exec.shutdown();
+				exec.awaitTermination(5, TimeUnit.MINUTES);
+				//answer via a QueryParser's future
+				queue.setAnswer(future.get());
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
