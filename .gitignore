@@ -1,7 +1,14 @@
 .class
+
 .jar
+
 .classpath
+
 .project
 
+
 .settings/
+
 target/
+
+Environment.java
