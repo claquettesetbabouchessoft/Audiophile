@@ -13,4 +13,9 @@ public class DBAuthorResult extends DBResult{
 	public Author getAuthor() {
 		return this.author;
 	}
+
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
+	
 }

@@ -33,6 +33,10 @@ public class Song {
 	public int getPosition() {
 		return position;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Song [name=" + name + ", image=" + image + ", songID=" + songID + ", position=" + position + "]";
+	}
 	
 }

@@ -13,4 +13,8 @@ public class DBSongResult extends DBResult{
 	public Song getSong() {
 		return this.song;
 	}
+
+	public void setSong(Song song) {
+		this.song = song;
+	}
 }

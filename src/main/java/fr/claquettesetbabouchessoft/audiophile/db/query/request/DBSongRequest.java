@@ -1,6 +1,6 @@
 package fr.claquettesetbabouchessoft.audiophile.db.query.request;
 
-import fr.claquettesetbabouchessoft.audiophile.db.query.Finder;
+import fr.claquettesetbabouchessoft.audiophile.db.query.RequestFinder;
 import fr.claquettesetbabouchessoft.audiophile.db.query.result.DBSongResult;
 
 public class DBSongRequest extends DBRequest{
@@ -18,6 +18,6 @@ public class DBSongRequest extends DBRequest{
 	@SuppressWarnings("unchecked")
 	@Override
 	public DBSongResult request() {
-		return Finder.answer(this);
+		return RequestFinder.answer(this);
 	}
 }
